@@ -1,11 +1,31 @@
 #!/usr/bin/env bash
 
+set -e
 # where we'll store these files
-OUTPUT_DIR=tmp/s3-bash-scripts"
+OUTPUT_DIR="tmp/s3-bash-scripts"
+
+# remove folder if it already exists
+rm -r $OUTPUT_DIR
 
 # lets create output folder
 mkdir -p $OUTPUT_DIR
 
 # generate a random number
 # to determine how many files to create
-NUM_FILES
+NUM_FILES=$((RANDOM % 6 + 5))
+
+for ((i=1; i<=$NUM_FILES; i++)); do
+    # Generate a random filename using date and RANDOM
+    FILENAME="$OUTPUT_DIR/file_$i.txt"
+    
+    # Create an empty file with that name
+    touch "$FILENAME"
+    
+    echo "Created file: $FILENAME"
+    
+    # Short pause to ensure unique filenames based on timestamp
+    sleep 0.1
+done
+
+tree $OUTPUT_DIR
+echo "Done."

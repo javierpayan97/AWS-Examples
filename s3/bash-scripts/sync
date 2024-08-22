@@ -1,2 +1,46 @@
 #!/usr/bin/env bash
 
+set -e
+
+if [ -z "$1" ]; then
+    echo "There needs to be a bucket name eg. ./bucket my-bucket-name"
+    exit 1
+fi
+
+BUCKET_NAME=$1
+# where we'll store these files
+if [ -z "$1" ]; then
+    echo "There needs to be a bucket name eg. ./bucket my-bucket-name"
+    exit 1
+fi
+
+FILENAME_PREFIX=$2
+
+OUTPUT_DIR="tmp/s3-bash-scripts"
+
+# remove folder if it already exists
+rm -r $OUTPUT_DIR
+
+# lets create output folder
+mkdir -p $OUTPUT_DIR
+
+# generate a random number
+# to determine how many files to create
+NUM_FILES=$((RANDOM % 6 + 5))
+
+for ((i=1; i<=$NUM_FILES; i++)); do
+    # Generate a random filename using date and RANDOM
+    FILENAME="$OUTPUT_DIR/$FILENAME_PREFIX_$i.txt"
+    
+    # Create an empty file with that name
+    touch "$FILENAME"
+    
+    echo "Created file: $FILENAME"
+    
+    # Short pause to ensure unique filenames based on timestamp
+    sleep 0.1
+done
+
+tree $OUTPUT_DIR
+
+aws s3 sync $OUTPUT_DIR s3://$BUCKET_NAME/files
