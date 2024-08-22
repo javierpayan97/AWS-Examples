@@ -1,1 +1,11 @@
 #!/usr/bin/env bash
+
+# where we'll store these files
+OUTPUT_DIR=tmp/s3-bash-scripts"
+
+# lets create output folder
+mkdir -p $OUTPUT_DIR
+
+# generate a random number
+# to determine how many files to create
+NUM_FILES
