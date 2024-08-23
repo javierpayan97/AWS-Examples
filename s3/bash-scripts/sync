@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-
+echo "== sync"
+#Exit immediately if any command returns a non-zero status
 set -e
 
 if [ -z "$1" ]; then
@@ -7,14 +8,14 @@ if [ -z "$1" ]; then
     exit 1
 fi
 
-BUCKET_NAME=$1
-# where we'll store these files
-if [ -z "$1" ]; then
-    echo "There needs to be a bucket name eg. ./bucket my-bucket-name"
+# where we'll store these filesif [ -z "$2" ]; then
+if [ -z "$2" ]; then
+    echo "There needs to be a filename prefi eg. ./bucket my-bucket-name my-filename-prefix"
     exit 1
 fi
 
-FILENAME_PREFIX=$2
+BUCKET_NAME="$1"
+FILENAME_PREFIX="$2"
 
 OUTPUT_DIR="tmp/s3-bash-scripts"
 
@@ -30,7 +31,7 @@ NUM_FILES=$((RANDOM % 6 + 5))
 
 for ((i=1; i<=$NUM_FILES; i++)); do
     # Generate a random filename using date and RANDOM
-    FILENAME="$OUTPUT_DIR/$FILENAME_PREFIX_$i.txt"
+    FILENAME="$OUTPUT_DIR/${FILENAME_PREFIX}_232$i.txt"
     
     # Create an empty file with that name
     touch "$FILENAME"
