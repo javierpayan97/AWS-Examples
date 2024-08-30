@@ -21,8 +21,8 @@ def write_file(filename):
     Parameters:
     filename (str): The name of the file where the random string will be written.
     """
-    digits = "".join([choice(string.digits) for _ in range(7)])
-    chars = "".join([choice(string.ascii_letters) for _ in range(19)])
+    digits = "".join([choice(string.digits) for x in range(7)])
+    chars = "".join([choice(string.ascii_letters) for y in range(19)])
     string_r = digits + chars
     with open(filename, 'a') as f:
         f.write(string_r)
