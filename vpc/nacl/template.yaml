@@ -1,0 +1,49 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Launch an EC2 instance
+
+Parameters:
+  InstanceType:
+    Type: String
+    Default: t2.micro
+  ImageID:
+    Type: String
+    Default: ami-01e3c4a339a264cc9
+  SubnetId:
+    Type: String
+    Default: subnet-07e1d7ce211505e63
+  VpcID:
+    Type: String
+    Default: vpc-0d22b3a47d889498f
+
+Resources: 
+  EC2InstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - AmazonSSMManagedInstanceCore
+
+  MyEC2Instance: 
+    Type: AWS::EC2::Instance
+    Properties: 
+      InstanceType: !Ref InstanceType
+      ImageId: !Ref ImageID
+      SubnetId: !Ref SubnetId
+      IamInstanceProfile: !Ref EC2InstanceProfile
+      SecurityGroupIds:
+        - !GetAtt InstanceSecurityGroup.GroupId
+
+  InstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow http to client host
+      VpcId: !Ref VpcID
+      SecurityGroupIngress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          FromPort: -1
+          ToPort: -1
+          CidrIp: 0.0.0.0/0
